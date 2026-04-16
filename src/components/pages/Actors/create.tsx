@@ -52,7 +52,7 @@ const CreateActor: React.FC = () => {
           <button type="submit" disabled={loading}>
             {loading ? "Creating..." : "Create Actor"}
           </button>
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p className="text-red-600">{error}</p>}
         </form>
       </div>
     </Page>
