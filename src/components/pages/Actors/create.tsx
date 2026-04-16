@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createActor } from "../../../services/actorService";
 import Page from "../../ui/Page";
+import Input from "../../ui/Input";
+import Button from "../../ui/Button";
 
 const CreateActor: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -35,27 +37,29 @@ const CreateActor: React.FC = () => {
 
   return (
     <Page title="Create New Threat Actor">
-      <div>
         <h1>Create New Threat Actor</h1>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="actor-name">Actor Name: </label>
-            <input
-              id="actor-name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              disabled={loading}
-              required
-            />
+          <div className="grid grid-cols-1 gap-6 mt-4">
+            <div>
+              <Input
+                id="actor-name"
+                type="text"
+                label="Actor Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={loading}
+                required
+              />
+            </div>
           </div>
-          <button type="submit" disabled={loading}>
-            {loading ? "Creating..." : "Create Actor"}
-          </button>
+          <div className="mt-4">
+            <Button type="submit" disabled={loading}>
+              {loading ? "Creating..." : "Create Actor"}
+            </Button>
+          </div>
           {error && <p className="text-red-600">{error}</p>}
         </form>
-      </div>
-    </Page>
+      </Page>
   );
 };
 
