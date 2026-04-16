@@ -55,52 +55,58 @@ import {
               </Link>
           </div>
           <Card>
-              <div className="overflow-x-auto">
-              <table className="table-auto w-full">
-              <thead className="text-left font-extralight text-sm uppercase border-b-2 border-gray-200">
-                  <tr>
-                  <th className="py-3 px-6 tracking-wide">TTP</th>
-                  <th className="py-3 px-6">Description</th>
-                  <th className="py-3 px-6 text-center">
-                      Actions
-                  </th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {ttps?.map((ttp) => (
-                  <tr key={ttp.id}>
-                      <td className="py-4 px-6 whitespace-nowrap">
-                      {ttp.name}
-                      </td>
-                      <td className="py-4 px-6">{ttp.description}</td>
-                      <td className="py-4 px-6 flex justify-center space-x-1">
-                      <Link
-                          to={`/ttps/${ttp.id}`}
-                          className="p-1 bg-gray-200 rounded-sm"
-                          aria-label="View"
-                      >
-                          <HiOutlineEye />
-                      </Link>
-                      <Link
-                          to={`/ttps/${ttp.id}/edit`}
-                          className="p-1 bg-gray-200 rounded-sm"
-                          aria-label="Edit"
-                      >
-                          <HiOutlinePencilAlt />
-                      </Link>
-                      <button
-                          className="p-1 bg-gray-200 rounded-sm"
-                          onClick={() => { /* TODO: implement delete */ }}
-                          aria-label="Delete"
-                      >
-                          <HiOutlineTrash />
-                      </button>
-                      </td>
-                  </tr>
-                  ))}
-              </tbody>
-              </table>
-              </div>
+              {ttps.length === 0 ? (
+                  <p className="text-center text-gray-400 py-8">
+                      No TTPs yet. Click &quot;Add new&quot; to create one.
+                  </p>
+              ) : (
+                  <div className="overflow-x-auto">
+                  <table className="table-auto w-full">
+                  <thead className="text-left font-extralight text-sm uppercase border-b-2 border-gray-200">
+                      <tr>
+                      <th className="py-3 px-6 tracking-wide">TTP</th>
+                      <th className="py-3 px-6">Description</th>
+                      <th className="py-3 px-6 text-center">
+                          Actions
+                      </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {ttps?.map((ttp) => (
+                      <tr key={ttp.id}>
+                          <td className="py-4 px-6 whitespace-nowrap">
+                          {ttp.name}
+                          </td>
+                          <td className="py-4 px-6">{ttp.description}</td>
+                          <td className="py-4 px-6 flex justify-center space-x-1">
+                          <Link
+                              to={`/ttps/${ttp.id}`}
+                              className="p-1 bg-gray-200 rounded-sm"
+                              aria-label="View"
+                          >
+                              <HiOutlineEye />
+                          </Link>
+                          <Link
+                              to={`/ttps/${ttp.id}/edit`}
+                              className="p-1 bg-gray-200 rounded-sm"
+                              aria-label="Edit"
+                          >
+                              <HiOutlinePencilAlt />
+                          </Link>
+                          <button
+                              className="p-1 bg-gray-200 rounded-sm"
+                              onClick={() => { /* TODO: implement delete */ }}
+                              aria-label="Delete"
+                          >
+                              <HiOutlineTrash />
+                          </button>
+                          </td>
+                      </tr>
+                      ))}
+                  </tbody>
+                  </table>
+                  </div>
+              )}
           </Card>
       </Page>
     );
