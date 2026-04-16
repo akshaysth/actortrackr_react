@@ -36,7 +36,7 @@ const ActorList: React.FC = () => {
 
   return (
     <Page title="Actors">
-      <div className="flex justify-between text-center">
+      <div className="flex justify-end text-center">
         <Link to="/actors/create">
           <Button>Create New Actor</Button>
         </Link>
