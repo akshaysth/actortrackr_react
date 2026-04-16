@@ -1,0 +1,88 @@
+import { useState, useEffect } from "react";
+import {
+  HiOutlineEye,
+  HiOutlinePencilAlt,
+  HiOutlinePlus,
+  HiOutlineTrash,
+} from "react-icons/hi";
+import { Link } from "react-router-dom";
+import Page from "../../ui/Page";
+import Card from "../../ui/Card";
+
+interface Report {
+    id: number;
+    name: string;
+    author: string;
+}
+
+const ReportsIndex = () => {
+  const [reports, setReports] = useState<Report[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/api/reports")
+      .then((res) => res.json())
+      .then((data) => setReports(data));
+  }, []);
+
+  return (
+    <Page title="Reports">
+        <div className="flex justify-between items-center mb-3">
+            <p className="text-md text-gray-500">
+                Showing {reports.length} of {reports.length} results
+            </p>
+            <Link
+                to="/reports/create"
+                className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+                <HiOutlinePlus />
+                <span>Add new</span>
+            </Link>
+        </div>
+        <Card>
+            <table className="table-auto w-full">
+            <thead className="text-left font-extralight text-sm uppercase border-b-2 border-gray-200">
+                <tr>
+                <th className="py-3 px-6 tracking-wide">Report Title</th>
+                <th className="py-3 px-6">Author</th>
+                <th className="py-3 px-6 text-center">
+                    Actions
+                </th>
+                </tr>
+            </thead>
+            <tbody>
+                {reports?.map((report) => (
+                <tr key={report.id}>
+                    <td className="py-4 px-6 whitespace-nowrap">
+                    {report.name}
+                    </td>
+                    <td className="py-4 px-6">{report.author}</td>
+                    <td className="py-4 px-6 flex justify-center space-x-1">
+                    <Link
+                        to={report.id.toString()}
+                        className="p-1 bg-gray-200 rounded-sm"
+                    >
+                        <HiOutlineEye />
+                    </Link>
+                    <Link
+                        to={`/reports/${report.id}/edit`}
+                        className="p-1 bg-gray-200 rounded-sm"
+                    >
+                        <HiOutlinePencilAlt />
+                    </Link>
+                    <button
+                        className="p-1 bg-gray-200 rounded-sm"
+                        onClick={() => { /* TODO: implement delete */ }}
+                    >
+                        <HiOutlineTrash />
+                    </button>
+                    </td>
+                </tr>
+                ))}
+            </tbody>
+            </table>
+        </Card>
+    </Page>
+  );
+};
+
+export default ReportsIndex;
