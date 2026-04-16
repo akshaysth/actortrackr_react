@@ -1,7 +1,7 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { HiOutlineBell, HiOutlineMenu } from "react-icons/hi";
 import { HiOutlineXMark } from "react-icons/hi2";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
 
 const user = {
@@ -12,17 +12,15 @@ const user = {
 };
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Actors", href: "/actors", current: false },
-  { name: "Reports", href: "/reports", current: false },
-  { name: "TTPs", href: "/ttps", current: false },
-  //   { name: "Reports", href: "#", current: false },
+  { name: "Home", href: "/" },
+  { name: "Actors", href: "/actors" },
+  { name: "Reports", href: "/reports" },
+  { name: "TTPs", href: "/ttps" },
 ];
 
 const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
+  { name: "Your Profile", href: "/profile" },
+  { name: "Settings", href: "/settings" },
 ];
 
 function classNames(...classes: string[]) {
@@ -30,6 +28,13 @@ function classNames(...classes: string[]) {
 }
 
 function Layout() {
+  const location = useLocation();
+
+  const getIsActive = (href: string) => {
+    if (href === "/") return location.pathname === "/";
+    return location.pathname.startsWith(href);
+  };
+
   return (
     <>
       <div className="min-h-full">
@@ -49,26 +54,29 @@ function Layout() {
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
                         {navigation.map((item) => (
-                          <a
-                            href={item.href}
+                          <Link
+                            to={item.href}
                             key={item.name}
                             className={classNames(
-                              item.current
+                              getIsActive(item.href)
                                 ? "bg-gray-900 text-white"
                                 : "text-gray-300 hover:bg-gray-700 hover:text-white",
                               "px-3 py-2 rounded-md text-sm font-medium"
                             )}
-                            aria-current={item.current ? "page" : undefined}
+                            aria-current={getIsActive(item.href) ? "page" : undefined}
                           >
                             {item.name}
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </div>
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6">
-                      <button className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                      <button
+                        className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                        onClick={() => console.log("Notifications clicked")}
+                      >
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">View notifications</span>
                         <HiOutlineBell className="h-6 w-6" aria-hidden="true" />
@@ -98,18 +106,31 @@ function Layout() {
                             {userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
                                 {({ active }) => (
-                                  <a
-                                    href={item.href}
+                                  <Link
+                                    to={item.href}
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
                                       "block px-4 py-2 text-sm text-gray-700"
                                     )}
                                   >
                                     {item.name}
-                                  </a>
+                                  </Link>
                                 )}
                               </Menu.Item>
                             ))}
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block w-full text-left px-4 py-2 text-sm text-gray-700"
+                                  )}
+                                  onClick={() => console.log("Sign out clicked")}
+                                >
+                                  Sign out
+                                </button>
+                              )}
+                            </Menu.Item>
                           </Menu.Items>
                         </Transition>
                       </Menu>
@@ -137,20 +158,19 @@ function Layout() {
               <Disclosure.Panel className="md:hidden">
                 <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                   {navigation.map((item) => (
-                    <Disclosure.Button
+                    <Link
+                      to={item.href}
                       key={item.name}
-                      as="a"
-                      href={item.href}
                       className={classNames(
-                        item.current
+                        getIsActive(item.href)
                           ? "bg-gray-900 text-white"
                           : "text-gray-300 hover:bg-gray-700 hover:text-white",
                         "block px-3 py-2 rounded-md text-base font-medium"
                       )}
-                      aria-current={item.current ? "page" : undefined}
+                      aria-current={getIsActive(item.href) ? "page" : undefined}
                     >
                       {item.name}
-                    </Disclosure.Button>
+                    </Link>
                   ))}
                 </div>
                 <div className="border-t border-gray-700 pb-3 pt-4">
@@ -170,7 +190,10 @@ function Layout() {
                         {user.email}
                       </div>
                     </div>
-                    <button className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <button
+                      className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                      onClick={() => console.log("Notifications clicked")}
+                    >
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">View notifications</span>
                       <HiOutlineBell className="h-6 w-6" aria-hidden="true" />
@@ -178,15 +201,21 @@ function Layout() {
                   </div>
                   <div className="mt-3 space-y-1 px-2">
                     {userNavigation.map((item) => (
-                      <Disclosure.Button
+                      <Link
+                        to={item.href}
                         key={item.name}
-                        as="a"
-                        href={item.href}
                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                       >
                         {item.name}
-                      </Disclosure.Button>
+                      </Link>
                     ))}
+                    <Disclosure.Button
+                      key="Sign out"
+                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                      onClick={() => console.log("Sign out clicked")}
+                    >
+                      Sign out
+                    </Disclosure.Button>
                   </div>
                 </div>
               </Disclosure.Panel>
