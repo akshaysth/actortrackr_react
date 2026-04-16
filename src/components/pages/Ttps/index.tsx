@@ -77,18 +77,21 @@ import {
                       <Link
                           to={`/ttps/${ttp.id}`}
                           className="p-1 bg-gray-200 rounded-sm"
+                          aria-label="View"
                       >
                           <HiOutlineEye />
                       </Link>
                       <Link
                           to={`/ttps/${ttp.id}/edit`}
                           className="p-1 bg-gray-200 rounded-sm"
+                          aria-label="Edit"
                       >
                           <HiOutlinePencilAlt />
                       </Link>
                       <button
                           className="p-1 bg-gray-200 rounded-sm"
                           onClick={() => { /* TODO: implement delete */ }}
+                          aria-label="Delete"
                       >
                           <HiOutlineTrash />
                       </button>
