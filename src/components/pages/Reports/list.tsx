@@ -27,7 +27,7 @@ const ReportsIndex = () => {
   return (
     <Page title="Reports">
         <div className="flex justify-between items-center mb-3">
-            <p className="text-md text-gray-500">
+            <p className="text-sm text-gray-500">
                 Showing {reports.length} of {reports.length} results
             </p>
             <Link

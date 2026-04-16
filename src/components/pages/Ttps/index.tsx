@@ -27,7 +27,7 @@ import {
     return (
       <Page title="TTPs">
           <div className="flex justify-between items-center mb-3">
-              <p className="text-md text-gray-500">
+              <p className="text-sm text-gray-500">
                   Showing {ttps.length} of {ttps.length} results
               </p>
               <Link
