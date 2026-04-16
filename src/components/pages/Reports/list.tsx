@@ -80,7 +80,7 @@ const ReportsIndex = () => {
                         <td className="py-4 px-6">{report.author}</td>
                         <td className="py-4 px-6 flex justify-center space-x-1">
                         <Link
-                            to={report.id.toString()}
+                            to={`/reports/${report.id}`}
                             className="p-1 bg-gray-200 rounded-sm"
                             aria-label="View"
                         >
