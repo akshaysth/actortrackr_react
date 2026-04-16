@@ -104,7 +104,7 @@ const TTPView = () => {
                 />
               </div>
             </div>
-            <hr className="bg-indigo-400 mt-8" />
+            <hr className="border-t-indigo-400 mt-8" />
             <h1 className="text-2xl my-2">Related</h1>
             <div className="flex flex-col">
               <label htmlFor="related-actors">Actors</label>
