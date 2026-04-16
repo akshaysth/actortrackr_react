@@ -55,6 +55,7 @@ const ReportsIndex = () => {
             </Link>
         </div>
         <Card>
+            <div className="overflow-x-auto">
             <table className="table-auto w-full">
             <thead className="text-left font-extralight text-sm uppercase border-b-2 border-gray-200">
                 <tr>
@@ -96,6 +97,7 @@ const ReportsIndex = () => {
                 ))}
             </tbody>
             </table>
+            </div>
         </Card>
     </Page>
   );
