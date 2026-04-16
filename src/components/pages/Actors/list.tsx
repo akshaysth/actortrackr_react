@@ -11,18 +11,24 @@ const ActorList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let mounted = true;
     const fetchActors = async () => {
       try {
         const response = await getActors();
-        setActors(response.data);
+        if (mounted) setActors(response.data);
       } catch (err) {
-        setError("Failed to fetch actors");
-        console.error(err);
+        if (mounted) {
+          setError("Failed to fetch actors");
+          console.error(err);
+        }
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     };
     fetchActors();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   if (loading) return <div>Loading actors...</div>;
