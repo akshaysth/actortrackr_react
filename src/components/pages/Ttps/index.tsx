@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
     HiOutlineEye,
     HiOutlinePencilAlt,
@@ -7,17 +8,27 @@ import {
   import { Link } from "react-router-dom";
   import Page from "../../ui/Page";
   import Card from "../../ui/Card";
-  
-  const TTPs = [
-      {id: 1, name: "TTP1", description: "TT1 Description"},
-  ];
-  
+
+  interface TTP {
+    id: number;
+    name: string;
+    description: string;
+  }
+
   const TTPList = () => {
+    const [ttps, setTtps] = useState<TTP[]>([]);
+
+    useEffect(() => {
+      fetch("http://localhost:3001/api/ttps")
+        .then((res) => res.json())
+        .then((data) => setTtps(data));
+    }, []);
+
     return (
       <Page title="TTPs">
           <div className="flex justify-between items-center mb-3">
               <p className="text-md text-gray-500">
-                  Showing {TTPs.length} of {TTPs.length} results
+                  Showing {ttps.length} of {ttps.length} results
               </p>
               <Link
                   to="/ttps/create"
@@ -39,21 +50,21 @@ import {
                   </tr>
               </thead>
               <tbody>
-                  {TTPs?.map((report) => (
-                  <tr key={report.id}>
+                  {ttps?.map((ttp) => (
+                  <tr key={ttp.id}>
                       <td className="py-4 px-6 whitespace-nowrap">
-                      {report.name}
+                      {ttp.name}
                       </td>
-                      <td className="py-4 px-6">{report.description}</td>
+                      <td className="py-4 px-6">{ttp.description}</td>
                       <td className="py-4 px-6 flex justify-center space-x-1">
                       <Link
-                          to={`/ttps/${report.id}`}
+                          to={`/ttps/${ttp.id}`}
                           className="p-1 bg-gray-200 rounded-sm"
                       >
                           <HiOutlineEye />
                       </Link>
                       <Link
-                          to={`/ttps/${report.id}/edit`}
+                          to={`/ttps/${ttp.id}/edit`}
                           className="p-1 bg-gray-200 rounded-sm"
                       >
                           <HiOutlinePencilAlt />
