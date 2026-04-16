@@ -8,9 +8,7 @@ const Report = () => {
 
   return (
     <Page title={title}>
-      <Card>
-        <div className="container"></div>
-      </Card>
+      <Card />
     </Page>
   );
 };

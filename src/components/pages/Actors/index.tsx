@@ -1,15 +1,8 @@
-import LayoutHeader from "../../Layout/header";
+import Page from "../../ui/Page";
 
-const Actor = ({ title }) => {
+const Actor = ({ title }: { title: string }) => {
   return (
-    <>
-      <LayoutHeader title="Actors" />
-      <main>
-        <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-          <div className="container"></div>
-        </div>
-      </main>
-    </>
+    <Page title={title} />
   );
 };
 
