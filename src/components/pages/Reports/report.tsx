@@ -1,19 +1,17 @@
 import { useParams } from "react-router-dom";
-import LayoutHeader from "../../Layout/header";
+import Page from "../../ui/Page";
+import Card from "../../ui/Card";
 
 const Report = () => {
   const { reportId } = useParams();
-  const title = "Report: " + reportId;
-  console.log(title);
+  const title = "Report: " + (reportId ?? "Unknown");
+
   return (
-    <>
-      <LayoutHeader title={title} />
-      <main>
-        <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-          <div className="container"></div>
-        </div>
-      </main>
-    </>
+    <Page title={title}>
+      <Card>
+        <div className="container"></div>
+      </Card>
+    </Page>
   );
 };
 
