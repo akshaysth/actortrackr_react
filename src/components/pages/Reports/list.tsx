@@ -17,15 +17,31 @@ interface Report {
 
 const ReportsIndex = () => {
   const [reports, setReports] = useState<Report[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let mounted = true;
     fetch("http://localhost:3001/api/reports")
       .then((res) => res.json())
-      .then((data) => setReports(data));
+      .then((data) => {
+        if (mounted) {
+          setReports(data);
+          setError(null);
+        }
+      })
+      .catch(() => {
+        if (mounted) {
+          setError("Failed to load reports");
+        }
+      });
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return (
     <Page title="Reports">
+        {error && <p className="text-red-600 mb-3">{error}</p>}
         <div className="flex justify-between items-center mb-3">
             <p className="text-sm text-gray-500">
                 Showing {reports.length} of {reports.length} results
