@@ -1,38 +1,50 @@
-import LayoutHeader from "../../Layout/header";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Page from "../../ui/Page";
+import Card from "../../ui/Card";
+import Input from "../../ui/Input";
+import Button from "../../ui/Button";
 
 const CreateReport = () => {
+  const navigate = useNavigate();
+  const [title, setTitle] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: submit to API
+    navigate("/reports");
+  };
+
   return (
-    <>
-      <LayoutHeader title="Create Report" />
-      <main>
-        <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-          <div className="container">
-            <div className="rounded-md shadow-md bg-white py-6 px-10">
-              <h1 className="text-2xl py-2 border-b-indigo-50 border-b-2">
-                Report Details
-              </h1>
-              <form>
-                <div className="grid grid-cols-1 gap-6 mt-4">
-                  <div>
-                    <label
-                      htmlFor="report-title"
-                      className="text-lg py-2 block"
-                    >
-                      Report Title
-                    </label>
-                    <input
-                      id="report-title"
-                      type="text"
-                      className="block w-full px-4 py-2 bg-gray-100 rounded-md outline-1 outline-indigo-300"
-                    />
-                  </div>
-                </div>
-              </form>
+    <Page title="Create Report">
+      <Card>
+        <h1 className="text-2xl py-2 border-b-indigo-50 border-b-2">
+          Report Details
+        </h1>
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 gap-6 mt-4">
+            <div>
+              <label
+                htmlFor="report-title"
+                className="text-lg py-2 block"
+              >
+                Report Title
+              </label>
+              <Input
+                id="report-title"
+                type="text"
+                placeholder="Enter report title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </div>
           </div>
-        </div>
-      </main>
-    </>
+          <div className="mt-4">
+            <Button type="submit">Create Report</Button>
+          </div>
+        </form>
+      </Card>
+    </Page>
   );
 };
 
