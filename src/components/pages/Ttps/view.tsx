@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import PageContent from "../../ui/page-content";
-import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "../../ui/card";
 import { Input } from "../../ui/input";
 import { Textarea } from "../../ui/textarea";
 import { Label } from "../../ui/label";
 import { Separator } from "../../ui/separator";
+import { Button } from "../../ui/button";
 
 interface TTPData {
   name: string;
@@ -18,19 +19,42 @@ interface TTPData {
 const TTPView = () => {
   const { ttpId } = useParams();
   const [ttp, setTtp] = useState<TTPData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let mounted = true;
+    setLoading(true);
     fetch(`http://localhost:3001/api/ttps/${ttpId}`)
       .then((res) => res.json())
-      .then((data) => setTtp(data));
+      .then((data) => {
+        if (mounted) {
+          setTtp(data);
+          setError(null);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (mounted) {
+          setError("Failed to load TTP");
+          setLoading(false);
+        }
+      });
+    return () => {
+      mounted = false;
+    };
   }, [ttpId]);
 
-  const title = "TTP: " + (ttpId ?? "Unknown");
+  if (loading) {
+    return <PageContent title="TTP"><p className="text-center text-muted-foreground py-8">Loading...</p></PageContent>;
+  }
 
-  if (!ttp) return <PageContent title={title}><p>Loading...</p></PageContent>;
+  if (error || !ttp) {
+    return <PageContent title="TTP"><div className="p-3 rounded-lg bg-destructive/10 text-destructive text-sm">{error || "TTP not found"}</div></PageContent>;
+  }
 
   return (
-    <PageContent title={title}>
+    <PageContent title={`TTP: ${ttp.name}`}>
       <Card>
         <CardHeader>
           <CardTitle>Overview</CardTitle>
@@ -94,15 +118,20 @@ const TTPView = () => {
               </div>
             </div>
             <Separator />
-            <CardHeader>
-              <CardTitle>Related</CardTitle>
-            </CardHeader>
             <div>
-              <Label htmlFor="related-actors">Actors</Label>
+              <Label htmlFor="related-actors">Related Actors</Label>
               <Input type="text" name="related-actors" id="related-actors" disabled />
             </div>
           </div>
         </CardContent>
+        <CardFooter className="gap-2">
+          <Link to={`/ttps/${ttpId}/edit`}>
+            <Button variant="secondary">Edit</Button>
+          </Link>
+          <Link to="/ttps">
+            <Button variant="ghost">Back to List</Button>
+          </Link>
+        </CardFooter>
       </Card>
     </PageContent>
   );
