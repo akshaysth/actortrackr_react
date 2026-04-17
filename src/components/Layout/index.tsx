@@ -89,7 +89,9 @@ function Layout() {
                   variant="ghost"
                   size="icon"
                   className="text-muted-foreground"
+                  type="button"
                   onClick={() => console.log("Notifications clicked")}
+                  aria-label="View notifications"
                 >
                   <Bell className="size-5" />
                   <span className="sr-only">View notifications</span>
@@ -99,7 +101,7 @@ function Layout() {
                   <DropdownMenuTrigger>
                     <button
                       type="button"
-                      className="relative rounded-full"
+                      className="relative rounded-full focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                     >
                       <span className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-medium">
                         {user.initials}
@@ -116,8 +118,10 @@ function Layout() {
                     {userNavigation.map((item) => (
                       <button
                         key={item.name}
+                        type="button"
                         className="group/dropdown-menu-item relative flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:pl-7 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive"
                         onClick={() => handleNavigation(item.href)}
+                        aria-label={item.name}
                       >
                         <User className="size-4" />
                         {item.name}
@@ -125,8 +129,10 @@ function Layout() {
                     ))}
                     <DropdownMenuSeparator />
                     <button
+                      type="button"
                       className="group/dropdown-menu-item relative flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:pl-7 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive"
                       onClick={() => console.log("Sign out clicked")}
+                      aria-label="Sign out"
                     >
                       <LogOut className="size-4" />
                       Sign out
@@ -139,7 +145,7 @@ function Layout() {
                   <SheetTrigger>
                     <button
                       type="button"
-                      className="text-muted-foreground"
+                      className="text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
                     >
                       <MenuIcon className="size-6" />
                       <span className="sr-only">Open main menu</span>
@@ -154,7 +160,7 @@ function Layout() {
                         <Link
                           to={item.href}
                           key={item.name}
-                          className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                          className={`rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-primary ${
                             getIsActive(item.href)
                               ? "bg-accent text-accent-foreground"
                               : "text-muted-foreground hover:bg-accent hover:text-foreground"
@@ -181,14 +187,16 @@ function Layout() {
                         <Link
                           to={item.href}
                           key={item.name}
-                          className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground"
+                          className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary"
                         >
                           {item.name}
                         </Link>
                       ))}
                       <button
-                        className="rounded-md px-3 py-2 text-sm font-medium text-destructive hover:bg-accent"
+                        type="button"
+                        className="rounded-md px-3 py-2 text-sm font-medium text-destructive hover:bg-accent focus-visible:ring-2 focus-visible:ring-primary"
                         onClick={() => console.log("Sign out clicked")}
+                        aria-label="Sign out"
                       >
                         Sign out
                       </button>
