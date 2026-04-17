@@ -20,7 +20,31 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
+app.use((err: any, _req: express.Request, res: express.Response, _next: any) => {
+  if (err.type === "entity.parse.failed") {
+    res.status(400).json({ error: "Invalid JSON in request body" });
+    return;
+  }
+  if (err.type === "entity.too.large") {
+    res.status(413).json({ error: "Request payload too large" });
+    return;
+  }
+  res.status(500).json({ error: "Internal server error" });
+});
+
+app.use((_req, res) => {
+  res.status(404).json({ error: "Endpoint not found" });
+});
+
 const db = new sqlite3.Database("./database.sqlite");
+
+function validateRequired(body: any, fields: string[]) {
+  const missing = fields.filter((f) => body[f] === undefined || body[f] === null || body[f] === "");
+  if (missing.length > 0) {
+    return `Missing required fields: ${missing.join(", ")}`;
+  }
+  return null;
+}
 
 db.serialize(() => {
   db.run(`
@@ -80,6 +104,11 @@ app.get("/api/reports", (req, res) => {
 
 app.post("/api/reports", (req, res) => {
   const { name, author } = req.body;
+  const validationError = validateRequired(req.body, ["name"]);
+  if (validationError) {
+    res.status(400).json({ error: validationError });
+    return;
+  }
   db.run(
     "INSERT INTO reports (name, author) VALUES (?, ?)",
     [name, author],
@@ -111,6 +140,11 @@ app.get("/api/reports/:id", (req, res) => {
 app.put("/api/reports/:id", (req, res) => {
   const { id } = req.params;
   const { name, author } = req.body;
+  const validationError = validateRequired(req.body, ["name"]);
+  if (validationError) {
+    res.status(400).json({ error: validationError });
+    return;
+  }
   db.run(
     "UPDATE reports SET name = ?, author = ? WHERE id = ?",
     [name, author, id],
@@ -155,6 +189,11 @@ app.get("/api/ttps", (req, res) => {
 
 app.post("/api/ttps", (req, res) => {
   const { name, description } = req.body;
+  const validationError = validateRequired(req.body, ["name"]);
+  if (validationError) {
+    res.status(400).json({ error: validationError });
+    return;
+  }
   db.run(
     "INSERT INTO ttps (name, description) VALUES (?, ?)",
     [name, description],
@@ -186,6 +225,11 @@ app.get("/api/ttps/:id", (req, res) => {
 app.put("/api/ttps/:id", (req, res) => {
   const { id } = req.params;
   const { name, description } = req.body;
+  const validationError = validateRequired(req.body, ["name"]);
+  if (validationError) {
+    res.status(400).json({ error: validationError });
+    return;
+  }
   db.run(
     "UPDATE ttps SET name = ?, description = ? WHERE id = ?",
     [name, description, id],
@@ -230,6 +274,11 @@ app.get("/api/actors", (req, res) => {
 
 app.post("/api/actors", (req, res) => {
   const { name, description } = req.body;
+  const validationError = validateRequired(req.body, ["name"]);
+  if (validationError) {
+    res.status(400).json({ error: validationError });
+    return;
+  }
   db.run(
     "INSERT INTO actors (name, description) VALUES (?, ?)",
     [name, description || null],
