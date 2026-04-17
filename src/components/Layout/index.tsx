@@ -1,16 +1,26 @@
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { HiOutlineBell, HiOutlineMenu } from "react-icons/hi";
-import { HiOutlineXMark } from "react-icons/hi2";
-import { Link, Outlet, useLocation } from "react-router-dom";
-import { Fragment } from "react/jsx-runtime";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
+import {
+  Menu as MenuIcon,
+  Bell,
+  User,
+  LogOut,
+} from "lucide-react";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -24,206 +34,171 @@ const userNavigation = [
   { name: "Settings", href: "/settings" },
 ];
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
+const user = {
+  name: "Tom Cook",
+  email: "tom@example.com",
+  initials: "TC",
+};
 
 function Layout() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const getIsActive = (href: string) => {
     if (href === "/") return location.pathname === "/";
     return location.pathname.startsWith(href);
   };
 
+  const handleNavigation = (href: string) => {
+    navigate(href);
+  };
+
   return (
     <>
       <div className="min-h-full">
-        <Disclosure as="nav" className="bg-gray-800">
-          {({ open }) => (
-            <>
-              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="flex h-16 items-center justify-between">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <img
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company"
-                        className="h-8 w-8"
-                      />
-                    </div>
-                    <div className="hidden md:block">
-                      <div className="ml-10 flex items-baseline space-x-4">
-                        {navigation.map((item) => (
-                          <Link
-                            to={item.href}
-                            key={item.name}
-                            className={classNames(
-                              getIsActive(item.href)
-                                ? "bg-gray-900 text-white"
-                                : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                              "px-3 py-2 rounded-md text-sm font-medium"
-                            )}
-                            aria-current={getIsActive(item.href) ? "page" : undefined}
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="hidden md:block">
-                    <div className="ml-4 flex items-center md:ml-6">
-                      <ThemeToggle />
-                      <button
-                        className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                        onClick={() => console.log("Notifications clicked")}
-                      >
-                        <span className="absolute -inset-1.5" />
-                        <span className="sr-only">View notifications</span>
-                        <HiOutlineBell className="h-6 w-6" aria-hidden="true" />
-                      </button>
-                      <Menu as="div" className="relative ml-3">
-                        <div>
-                          <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <span className="absolute -inset-1.5" />
-                            <span className="sr-only">Open user menu</span>
-                            <img
-                              src={user.imageUrl}
-                              alt=""
-                              className="h-8 w-8 rounded-full"
-                            />
-                          </Menu.Button>
-                        </div>
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
-                        >
-                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            {userNavigation.map((item) => (
-                              <Menu.Item key={item.name}>
-                                {({ active }) => (
-                                  <Link
-                                    to={item.href}
-                                    className={classNames(
-                                      active ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm text-gray-700"
-                                    )}
-                                  >
-                                    {item.name}
-                                  </Link>
-                                )}
-                              </Menu.Item>
-                            ))}
-                            <Menu.Item>
-                              {({ active }) => (
-                                <button
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block w-full text-left px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                  onClick={() => console.log("Sign out clicked")}
-                                >
-                                  Sign out
-                                </button>
-                              )}
-                            </Menu.Item>
-                          </Menu.Items>
-                        </Transition>
-                      </Menu>
-                    </div>
-                  </div>
-                  <div className="-mr-2 flex md:hidden">
-                    <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="absolute -inset-0.5" />
-                      <span className="sr-only">Open main menu</span>
-                      {open ? (
-                        <HiOutlineXMark
-                          className="block h-6 w-6"
-                          aria-hidden="true"
-                        />
-                      ) : (
-                        <HiOutlineMenu
-                          className="block h-6 w-6"
-                          aria-hidden="true"
-                        />
-                      )}
-                    </Disclosure.Button>
-                  </div>
-                </div>
-              </div>
-              <Disclosure.Panel className="md:hidden">
-                <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                  {navigation.map((item) => (
-                    <Link
-                      to={item.href}
-                      key={item.name}
-                      className={classNames(
-                        getIsActive(item.href)
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                        "block px-3 py-2 rounded-md text-base font-medium"
-                      )}
-                      aria-current={getIsActive(item.href) ? "page" : undefined}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-                <div className="border-t border-gray-700 pb-3 pt-4">
-                  <div className="flex items-center px-5">
-                    <div className="flex-shrink-0">
-                      <img
-                        src={user.imageUrl}
-                        alt=""
-                        className="h-10 w-10 rounded-full"
-                      />
-                    </div>
-                    <div className="ml-3">
-                      <div className="text-base font-medium leading-none text-white">
-                        {user.name}
-                      </div>
-                      <div className="text-sm font-medium leading-none text-gray-400">
-                        {user.email}
-                      </div>
-                    </div>
-                    <button
-                      className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                      onClick={() => console.log("Notifications clicked")}
-                    >
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">View notifications</span>
-                      <HiOutlineBell className="h-6 w-6" aria-hidden="true" />
-                    </button>
-                  </div>
-                  <div className="mt-3 space-y-1 px-2">
-                    {userNavigation.map((item) => (
+        {/* Desktop nav */}
+        <nav className="border-b bg-card text-foreground">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex h-16 items-center justify-between">
+              <div className="flex items-center">
+                <Link to="/" className="flex shrink-0 items-center">
+                  <span className="text-xl font-bold text-primary">Actortrackr</span>
+                </Link>
+                <div className="hidden md:block">
+                  <div className="ml-10 flex items-baseline space-x-1">
+                    {navigation.map((item) => (
                       <Link
                         to={item.href}
                         key={item.name}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                        className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                          getIsActive(item.href)
+                            ? "bg-accent text-accent-foreground"
+                            : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                        }`}
+                        aria-current={getIsActive(item.href) ? "page" : undefined}
                       >
                         {item.name}
                       </Link>
                     ))}
-                    <Disclosure.Button
-                      key="Sign out"
-                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                      onClick={() => console.log("Sign out clicked")}
-                    >
-                      Sign out
-                    </Disclosure.Button>
                   </div>
                 </div>
-              </Disclosure.Panel>
-            </>
-          )}
-        </Disclosure>
+              </div>
+              <div className="hidden md:flex md:items-center md:gap-2">
+                <ThemeToggle />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-muted-foreground"
+                  onClick={() => console.log("Notifications clicked")}
+                >
+                  <Bell className="size-5" />
+                  <span className="sr-only">View notifications</span>
+                </Button>
+                <Separator orientation="vertical" className="h-6" />
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <button
+                      type="button"
+                      className="relative rounded-full"
+                    >
+                      <span className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-medium">
+                        {user.initials}
+                      </span>
+                      <span className="sr-only">Open user menu</span>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <div className="px-2 py-1.5 text-sm text-muted-foreground">
+                      <p className="font-medium text-foreground">{user.name}</p>
+                      <p>{user.email}</p>
+                    </div>
+                    <DropdownMenuSeparator />
+                    {userNavigation.map((item) => (
+                      <button
+                        key={item.name}
+                        className="group/dropdown-menu-item relative flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:pl-7 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive"
+                        onClick={() => handleNavigation(item.href)}
+                      >
+                        <User className="size-4" />
+                        {item.name}
+                      </button>
+                    ))}
+                    <DropdownMenuSeparator />
+                    <button
+                      className="group/dropdown-menu-item relative flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:pl-7 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive"
+                      onClick={() => console.log("Sign out clicked")}
+                    >
+                      <LogOut className="size-4" />
+                      Sign out
+                    </button>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              <div className="flex md:hidden">
+                <Sheet>
+                  <SheetTrigger>
+                    <button
+                      type="button"
+                      className="text-muted-foreground"
+                    >
+                      <MenuIcon className="size-6" />
+                      <span className="sr-only">Open main menu</span>
+                    </button>
+                  </SheetTrigger>
+                  <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                    <SheetHeader>
+                      <SheetTitle>Actortrackr</SheetTitle>
+                    </SheetHeader>
+                    <div className="flex flex-col gap-1 pt-4">
+                      {navigation.map((item) => (
+                        <Link
+                          to={item.href}
+                          key={item.name}
+                          className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                            getIsActive(item.href)
+                              ? "bg-accent text-accent-foreground"
+                              : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                          }`}
+                          aria-current={getIsActive(item.href) ? "page" : undefined}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                    <Separator className="my-4" />
+                    <div className="flex items-center gap-3 px-2">
+                      <span className="flex size-10 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium">
+                        {user.initials}
+                      </span>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium">{user.name}</span>
+                        <span className="text-xs text-muted-foreground">{user.email}</span>
+                      </div>
+                    </div>
+                    <div className="mt-4 flex flex-col gap-1 px-2">
+                      <ThemeToggle />
+                      {userNavigation.map((item) => (
+                        <Link
+                          to={item.href}
+                          key={item.name}
+                          className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground"
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                      <button
+                        className="rounded-md px-3 py-2 text-sm font-medium text-destructive hover:bg-accent"
+                        onClick={() => console.log("Sign out clicked")}
+                      >
+                        Sign out
+                      </button>
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              </div>
+            </div>
+          </div>
+        </nav>
         <Outlet />
       </div>
     </>
