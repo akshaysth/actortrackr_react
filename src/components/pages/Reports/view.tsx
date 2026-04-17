@@ -1,5 +1,5 @@
 import Page from "../../ui/Page";
-import Card from "../../ui/Card";
+import { Card } from "../../ui/card";
 
 const ReportView = () => {
   return (

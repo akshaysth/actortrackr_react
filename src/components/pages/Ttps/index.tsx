@@ -7,7 +7,7 @@ import {
   } from "react-icons/hi";
   import { Link } from "react-router-dom";
   import Page from "../../ui/Page";
-  import Card from "../../ui/Card";
+  import { Card } from "../../ui/card";
 
   interface TTP {
     id: number;

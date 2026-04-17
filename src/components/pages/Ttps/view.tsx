@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Page from "../../ui/Page";
-import Card from "../../ui/Card";
+import { Card } from "../../ui/card";
 import { Input } from "../../ui/input";
 
 interface TTPData {

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import Page from "../../ui/Page";
-import Card from "../../ui/Card";
+import { Card } from "../../ui/card";
 
 const Report = () => {
   const { reportId } = useParams();
