@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import PageContent from "../../ui/page-content";
-import { Card } from "../../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { Input } from "../../ui/input";
+import { Textarea } from "../../ui/textarea";
+import { Label } from "../../ui/label";
+import { Separator } from "../../ui/separator";
 
 interface TTPData {
   name: string;
@@ -29,16 +32,15 @@ const TTPView = () => {
   return (
     <PageContent title={title}>
       <Card>
-        <div className="row">
-          <h1 className="text-2xl my-2">Overview</h1>
-          <div className="py-2 border-t-purple-50 border-t-2 flex flex-col gap-2">
+        <CardHeader>
+          <CardTitle>Overview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col gap-4">
             <div>
-              <label
-                htmlFor="name"
-                className="text-gray-700 font-bold mt-2"
-              >
+              <Label htmlFor="name" className="mb-2 block">
                 Name
-              </label>
+              </Label>
               <Input
                 type="text"
                 name="name"
@@ -47,40 +49,30 @@ const TTPView = () => {
               />
             </div>
             <div>
-              <label
-                htmlFor="description"
-                className="text-gray-700 font-bold mt-2"
-              >
+              <Label htmlFor="description" className="mb-2 block">
                 Description
-              </label>
-              <textarea
+              </Label>
+              <Textarea
                 name="description"
                 id="description"
-                className="w-full border p-2 rounded-md"
                 defaultValue={ttp.description}
               />
             </div>
             <div>
-              <label
-                htmlFor="first-obs-date"
-                className="text-gray-700 font-bold mt-2"
-              >
+              <Label htmlFor="first-obs-date" className="mb-2 block">
                 First Observed Date
-              </label>
+              </Label>
               <Input
                 type="date"
                 name="first-obs-date"
                 id="first-obs-date"
               />
             </div>
-            <div className="flex flex-row space-x-8">
+            <div className="flex flex-row gap-4">
               <div className="flex flex-col w-full">
-                <label
-                  htmlFor="criticality"
-                  className="text-gray-700 font-bold mt-2"
-                >
+                <Label htmlFor="criticality" className="mb-2 block">
                   Criticality
-                </label>
+                </Label>
                 <Input
                   type="number"
                   name="criticality"
@@ -90,12 +82,9 @@ const TTPView = () => {
                 />
               </div>
               <div className="flex flex-col w-full">
-                <label
-                  htmlFor="family"
-                  className="text-gray-700 font-bold mt-2"
-                >
+                <Label htmlFor="family" className="mb-2 block">
                   Classification Family
-                </label>
+                </Label>
                 <Input
                   name="family"
                   id="family"
@@ -104,16 +93,18 @@ const TTPView = () => {
                 />
               </div>
             </div>
-            <hr className="border-t-indigo-400 mt-8" />
-            <h1 className="text-2xl my-2">Related</h1>
-            <div className="flex flex-col">
-              <label htmlFor="related-actors">Actors</label>
+            <Separator />
+            <CardHeader>
+              <CardTitle>Related</CardTitle>
+            </CardHeader>
+            <div>
+              <Label htmlFor="related-actors">Actors</Label>
               <Input type="text" name="related-actors" id="related-actors" disabled />
             </div>
           </div>
-        </div>
+        </CardContent>
       </Card>
-</PageContent>
+    </PageContent>
   );
 };
 

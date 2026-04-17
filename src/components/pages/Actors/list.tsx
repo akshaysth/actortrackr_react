@@ -32,7 +32,7 @@ const ActorList: React.FC = () => {
   }, []);
 
   if (loading) return <div>Loading actors...</div>;
-  if (error) return <div className="text-red-600">{error}</div>;
+  if (error) return <div className="text-destructive">{error}</div>;
 
   return (
     <PageContent title="Actors">

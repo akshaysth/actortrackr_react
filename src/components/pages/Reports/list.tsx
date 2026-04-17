@@ -1,13 +1,9 @@
 import { useState, useEffect } from "react";
-import {
-  HiOutlineEye,
-  HiOutlinePencilAlt,
-  HiOutlinePlus,
-  HiOutlineTrash,
-} from "react-icons/hi";
 import { Link } from "react-router-dom";
 import PageContent from "../../ui/page-content";
-import { Card } from "../../ui/card";
+import { Card, CardContent } from "../../ui/card";
+import { Button } from "../../ui/button";
+import { HiOutlineEye, HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 
 interface Report {
     id: number;
@@ -41,28 +37,29 @@ const ReportsIndex = () => {
 
   return (
     <PageContent title="Reports">
-        {error && <p className="text-red-600 mb-3">{error}</p>}
+        {error && <p className="text-destructive mb-3">{error}</p>}
         <div className="flex justify-between items-center mb-3">
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
                 Showing {reports.length} of {reports.length} results
             </p>
             <Link
                 to="/reports/create"
-                className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
-                <HiOutlinePlus />
-                <span>Add new</span>
+                <Button>
+                    Add new
+                </Button>
             </Link>
         </div>
         <Card>
+            <CardContent>
             {reports.length === 0 ? (
-                <p className="text-center text-gray-400 py-8">
+                <p className="text-center text-muted-foreground py-8">
                     No reports yet. Click &quot;Add new&quot; to create one.
                 </p>
             ) : (
                 <div className="overflow-x-auto">
                 <table className="table-auto w-full">
-                <thead className="text-left font-extralight text-sm uppercase border-b-2 border-gray-200">
+                <thead className="text-left text-sm uppercase border-b border-border">
                     <tr>
                     <th className="py-3 px-6 tracking-wide">Report Title</th>
                     <th className="py-3 px-6">Author</th>
@@ -73,7 +70,7 @@ const ReportsIndex = () => {
                 </thead>
                 <tbody>
                     {reports?.map((report) => (
-                    <tr key={report.id}>
+                    <tr key={report.id} className="border-b border-border/50">
                         <td className="py-4 px-6 whitespace-nowrap">
                         {report.name}
                         </td>
@@ -81,24 +78,28 @@ const ReportsIndex = () => {
                         <td className="py-4 px-6 flex justify-center space-x-1">
                         <Link
                             to={`/reports/${report.id}`}
-                            className="p-1 bg-gray-200 rounded-sm"
                             aria-label="View"
                         >
-                            <HiOutlineEye />
+                            <Button variant="ghost" size="icon" className="size-8">
+                                <HiOutlineEye className="size-4" />
+                            </Button>
                         </Link>
                         <Link
                             to={`/reports/${report.id}/edit`}
-                            className="p-1 bg-gray-200 rounded-sm"
                             aria-label="Edit"
                         >
-                            <HiOutlinePencilAlt />
+                            <Button variant="ghost" size="icon" className="size-8">
+                                <HiOutlinePencilAlt className="size-4" />
+                            </Button>
                         </Link>
                         <button
-                            className="p-1 bg-gray-200 rounded-sm"
+                            className="p-1"
                             onClick={() => { /* TODO: implement delete */ }}
                             aria-label="Delete"
                         >
-                            <HiOutlineTrash />
+                            <Button variant="ghost" size="icon" className="size-8 text-destructive">
+                                <HiOutlineTrash className="size-4" />
+                            </Button>
                         </button>
                         </td>
                     </tr>
@@ -107,6 +108,7 @@ const ReportsIndex = () => {
                 </table>
                 </div>
             )}
+            </CardContent>
         </Card>
     </PageContent>
   );

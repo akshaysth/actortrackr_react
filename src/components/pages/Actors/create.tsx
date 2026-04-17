@@ -24,7 +24,6 @@ const CreateActor: React.FC = () => {
 
     try {
       await createActor({ name });
-      // On success, navigate back to the actor list
       navigate("/actors");
     } catch (err) {
       setError(
@@ -38,28 +37,28 @@ const CreateActor: React.FC = () => {
 
   return (
     <PageContent title="Create New Threat Actor">
-        <h1>Create New Threat Actor</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 gap-6 mt-4">
-            <FormField label="Actor Name" error={error} id="actor-name">
-              <Input
-                id="actor-name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                disabled={loading}
-                required
-              />
-            </FormField>
-          </div>
-          <div className="mt-4">
-            <Button type="submit" disabled={loading}>
-              {loading ? "Creating..." : "Create Actor"}
-            </Button>
-          </div>
-          {error && <p className="text-red-600">{error}</p>}
-        </form>
-      </PageContent>
+      <h1>Create New Threat Actor</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 gap-6 mt-4">
+          <FormField label="Actor Name" error={error} id="actor-name">
+            <Input
+              id="actor-name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              disabled={loading}
+              required
+            />
+          </FormField>
+        </div>
+        <div className="mt-4">
+          <Button type="submit" disabled={loading}>
+            {loading ? "Creating..." : "Create Actor"}
+          </Button>
+        </div>
+        {error && <p className="text-destructive">{error}</p>}
+      </form>
+    </PageContent>
   );
 };
 
