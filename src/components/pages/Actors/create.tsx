@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createActor } from "../../../services/actorService";
 import Page from "../../ui/Page";
 import Input from "../../ui/Input";
-import Button from "../../ui/Button";
+import { Button } from "../../ui/button";
 
 const CreateActor: React.FC = () => {
   const [name, setName] = useState<string>("");

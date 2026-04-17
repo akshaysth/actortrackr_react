@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Page from "../../ui/Page";
 import Card from "../../ui/Card";
 import Input from "../../ui/Input";
-import Button from "../../ui/Button";
+import { Button } from "../../ui/button";
 
 const CreateReport = () => {
   const navigate = useNavigate();

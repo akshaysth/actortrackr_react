@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { getActors } from "../../../services/actorService";
 import { Actor } from "../../../types/actor.types";
 import Page from "../../ui/Page";
-import Button from "../../ui/Button";
+import { Button } from "../../ui/button";
 
 const ActorList: React.FC = () => {
   const [actors, setActors] = useState<Actor[]>([]);
