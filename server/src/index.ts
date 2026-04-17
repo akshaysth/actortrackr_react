@@ -109,13 +109,32 @@ app.get("/api/actors", (req, res) => {
 });
 
 app.post("/api/actors", (req, res) => {
-  const { name } = req.body;
-  db.run("INSERT INTO actors (name) VALUES (?)", [name], function (err) {
+  const { name, description } = req.body;
+  db.run(
+    "INSERT INTO actors (name, description) VALUES (?, ?)",
+    [name, description || null],
+    function (err) {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({ id: this.lastID });
+    }
+  );
+});
+
+app.delete("/api/actors/:id", (req, res) => {
+  const { id } = req.params;
+  db.run("DELETE FROM actors WHERE id = ?", [id], function (err) {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
     }
-    res.json({ id: this.lastID });
+    if (this.changes === 0) {
+      res.status(404).json({ error: "Actor not found" });
+      return;
+    }
+    res.json({ message: "Actor deleted" });
   });
 });
 

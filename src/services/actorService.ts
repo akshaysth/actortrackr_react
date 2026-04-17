@@ -13,4 +13,7 @@ export const getActorById = (id: string | number) => {
 export const createActor = (actorData: Omit<Actor, 'id'>) => {
   return apiClient.post<Actor>('/actors', actorData);
 };
-// ... add updateActor, deleteActor etc. as you build them out
+
+export const deleteActor = (id: number | string) => {
+  return apiClient.delete(`/actors/${id}`);
+};
