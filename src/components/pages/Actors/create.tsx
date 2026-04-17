@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createActor } from "../../../services/actorService";
 import Page from "../../ui/Page";
-import Input from "../../ui/Input";
+import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
+import { FormField } from "../../ui/form-field";
 
 const CreateActor: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -40,17 +41,16 @@ const CreateActor: React.FC = () => {
         <h1>Create New Threat Actor</h1>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-6 mt-4">
-            <div>
+            <FormField label="Actor Name" error={error} id="actor-name">
               <Input
                 id="actor-name"
                 type="text"
-                label="Actor Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={loading}
                 required
               />
-            </div>
+            </FormField>
           </div>
           <div className="mt-4">
             <Button type="submit" disabled={loading}>
