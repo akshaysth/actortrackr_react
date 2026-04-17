@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Page from "../../ui/Page";
+import PageContent from "../../ui/page-content";
 import { Card } from "../../ui/card";
 import { Input } from "../../ui/input";
 
@@ -24,10 +24,10 @@ const TTPView = () => {
 
   const title = "TTP: " + (ttpId ?? "Unknown");
 
-  if (!ttp) return <Page title={title}><p>Loading...</p></Page>;
+  if (!ttp) return <PageContent title={title}><p>Loading...</p></PageContent>;
 
   return (
-    <Page title={title}>
+    <PageContent title={title}>
       <Card>
         <div className="row">
           <h1 className="text-2xl my-2">Overview</h1>
@@ -113,7 +113,7 @@ const TTPView = () => {
           </div>
         </div>
       </Card>
-    </Page>
+</PageContent>
   );
 };
 

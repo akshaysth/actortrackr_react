@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import Page from "../../ui/Page";
+import PageContent from "../../ui/page-content";
 import { Card } from "../../ui/card";
 
 const Report = () => {
@@ -7,9 +7,9 @@ const Report = () => {
   const title = "Report: " + (reportId ?? "Unknown");
 
   return (
-    <Page title={title}>
+    <PageContent title={title}>
       <Card />
-    </Page>
+    </PageContent>
   );
 };
 

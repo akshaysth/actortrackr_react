@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getActors } from "../../../services/actorService";
 import { Actor } from "../../../types/actor.types";
-import Page from "../../ui/Page";
+import PageContent from "../../ui/page-content";
 import { Button } from "../../ui/button";
 
 const ActorList: React.FC = () => {
@@ -35,7 +35,7 @@ const ActorList: React.FC = () => {
   if (error) return <div className="text-red-600">{error}</div>;
 
   return (
-    <Page title="Actors">
+    <PageContent title="Actors">
       <div className="flex justify-end text-center">
         <Link to="/actors/create">
           <Button>Create New Actor</Button>
@@ -46,7 +46,7 @@ const ActorList: React.FC = () => {
           <li key={actor.id}>{actor.name}</li>
         ))}
       </ul>
-    </Page>
+    </PageContent>
   );
 };
 

@@ -1,11 +1,11 @@
-import Page from "../../ui/Page";
+import PageContent from "../../ui/page-content";
 import { Card } from "../../ui/card";
 
 const ReportView = () => {
   return (
-    <Page title="Report View">
+    <PageContent title="Report View">
       <Card />
-    </Page>
+    </PageContent>
   );
 };
 

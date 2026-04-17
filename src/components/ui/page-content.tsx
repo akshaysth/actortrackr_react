@@ -1,13 +1,13 @@
 import { ReactNode } from "react"
 
-interface PageProps {
+interface PageContentProps {
   title: string
   subtitle?: string
   action?: ReactNode
   children?: ReactNode
 }
 
-export default function Page({ title, subtitle, action, children }: PageProps) {
+export default function PageContent({ title, subtitle, action, children }: PageContentProps) {
   return (
     <div className="p-8">
       <div className="flex justify-between items-center mb-8">

@@ -6,7 +6,7 @@ import {
     HiOutlineTrash,
   } from "react-icons/hi";
   import { Link } from "react-router-dom";
-  import Page from "../../ui/Page";
+  import PageContent from "../../ui/page-content";
   import { Card } from "../../ui/card";
 
   interface TTP {
@@ -40,7 +40,7 @@ import {
     }, []);
 
     return (
-      <Page title="TTPs">
+      <PageContent title="TTPs">
           {error && <p className="text-red-600 mb-3">{error}</p>}
           <div className="flex justify-between items-center mb-3">
               <p className="text-sm text-gray-500">
@@ -108,7 +108,7 @@ import {
                   </div>
               )}
           </Card>
-      </Page>
+      </PageContent>
     );
   };
   

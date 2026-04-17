@@ -1,8 +1,8 @@
-import Page from "../../ui/Page";
+import PageContent from "../../ui/page-content";
 
 const Actor = ({ title }: { title: string }) => {
   return (
-    <Page title={title} />
+    <PageContent title={title} />
   );
 };
 

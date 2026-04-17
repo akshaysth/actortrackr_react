@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createActor } from "../../../services/actorService";
-import Page from "../../ui/Page";
+import PageContent from "../../ui/page-content";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { FormField } from "../../ui/form-field";
@@ -37,7 +37,7 @@ const CreateActor: React.FC = () => {
   };
 
   return (
-    <Page title="Create New Threat Actor">
+    <PageContent title="Create New Threat Actor">
         <h1>Create New Threat Actor</h1>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-6 mt-4">
@@ -59,7 +59,7 @@ const CreateActor: React.FC = () => {
           </div>
           {error && <p className="text-red-600">{error}</p>}
         </form>
-      </Page>
+      </PageContent>
   );
 };
 

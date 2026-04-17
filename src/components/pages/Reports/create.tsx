@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Page from "../../ui/Page";
+import PageContent from "../../ui/page-content";
 import { Card } from "../../ui/card";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
@@ -16,7 +16,7 @@ const CreateReport = () => {
   };
 
   return (
-    <Page title="Create Report">
+    <PageContent title="Create Report">
       <Card>
         <h1 className="text-2xl py-2 border-b-indigo-50 border-b-2">
           Report Details
@@ -44,7 +44,7 @@ const CreateReport = () => {
           </div>
         </form>
       </Card>
-    </Page>
+    </PageContent>
   );
 };
 
