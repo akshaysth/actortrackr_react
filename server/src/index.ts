@@ -7,8 +7,8 @@ const port = 3001;
 
 const allowedOrigins = ["http://localhost:5173"];
 const corsOptions = {
-  origin: (origin, callback) => {
-    if (allowedOrigins.includes(origin) || !origin) {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
@@ -73,6 +73,56 @@ app.post("/api/reports", (req, res) => {
   );
 });
 
+app.get("/api/reports/:id", (req, res) => {
+  const { id } = req.params;
+  db.get("SELECT * FROM reports WHERE id = ?", [id], (err, row) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (!row) {
+      res.status(404).json({ error: "Report not found" });
+      return;
+    }
+    res.json(row);
+  });
+});
+
+app.put("/api/reports/:id", (req, res) => {
+  const { id } = req.params;
+  const { name, author } = req.body;
+  db.run(
+    "UPDATE reports SET name = ?, author = ? WHERE id = ?",
+    [name, author, id],
+    function (err) {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      if (this.changes === 0) {
+        res.status(404).json({ error: "Report not found" });
+        return;
+      }
+      res.json({ message: "Report updated" });
+    }
+  );
+});
+
+app.delete("/api/reports/:id", (req, res) => {
+  const { id } = req.params;
+  db.run("DELETE FROM reports WHERE id = ?", [id], function (err) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (this.changes === 0) {
+      res.status(404).json({ error: "Report not found" });
+      return;
+    }
+    res.json({ message: "Report deleted" });
+  });
+});
+
 app.get("/api/ttps", (req, res) => {
   db.all("SELECT * FROM ttps", (err, rows) => {
     if (err) {
@@ -96,6 +146,56 @@ app.post("/api/ttps", (req, res) => {
       res.json({ id: this.lastID });
     }
   );
+});
+
+app.get("/api/ttps/:id", (req, res) => {
+  const { id } = req.params;
+  db.get("SELECT * FROM ttps WHERE id = ?", [id], (err, row) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (!row) {
+      res.status(404).json({ error: "TTP not found" });
+      return;
+    }
+    res.json(row);
+  });
+});
+
+app.put("/api/ttps/:id", (req, res) => {
+  const { id } = req.params;
+  const { name, description } = req.body;
+  db.run(
+    "UPDATE ttps SET name = ?, description = ? WHERE id = ?",
+    [name, description, id],
+    function (err) {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      if (this.changes === 0) {
+        res.status(404).json({ error: "TTP not found" });
+        return;
+      }
+      res.json({ message: "TTP updated" });
+    }
+  );
+});
+
+app.delete("/api/ttps/:id", (req, res) => {
+  const { id } = req.params;
+  db.run("DELETE FROM ttps WHERE id = ?", [id], function (err) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (this.changes === 0) {
+      res.status(404).json({ error: "TTP not found" });
+      return;
+    }
+    res.json({ message: "TTP deleted" });
+  });
 });
 
 app.get("/api/actors", (req, res) => {
