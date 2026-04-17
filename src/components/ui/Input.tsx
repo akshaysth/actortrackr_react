@@ -1,46 +1,21 @@
-import React from "react";
-import { clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import * as React from "react"
+import { Input as InputPrimitive } from "@base-ui/react/input"
 
-function cn(...inputs: (string | undefined)[]) {
-  return twMerge(clsx(inputs.filter(Boolean)));
+import { cn } from "@/lib/utils"
+
+function Input({ className, type, label, ...props }: React.ComponentProps<"input"> & { label?: string }) {
+  return (
+    <InputPrimitive
+      type={type}
+      data-slot="input"
+      className={cn(
+        "h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base transition-colors outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
+        className
+      )}
+      {...props}
+    />
+  )
 }
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
-}
-
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, id, ...props }, ref) => {
-    const inputId = id || label?.toLowerCase().replace(/\s+/g, "-");
-    return (
-      <div className="flex flex-col gap-1">
-        {label && (
-          <label htmlFor={inputId} className="text-sm font-medium text-gray-700">
-            {label}
-          </label>
-        )}
-        <input
-          ref={ref}
-          id={inputId}
-          className={cn(
-            "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
-            error && "border-red-500 focus:border-red-500",
-            className
-          )}
-          aria-invalid={error ? "true" : undefined}
-          aria-describedby={error ? `${inputId}-error` : undefined}
-          {...props}
-        />
-        {error && (
-          <span id={`${inputId}-error`} className="text-xs text-red-600">
-            {error}
-          </span>
-        )}
-      </div>
-    );
-  }
-);
-
-export default Input;
+export { Input }
+export default Input

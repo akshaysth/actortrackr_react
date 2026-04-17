@@ -3,6 +3,7 @@ import { HiOutlineBell, HiOutlineMenu } from "react-icons/hi";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const user = {
   name: "Tom Cook",
@@ -73,6 +74,7 @@ function Layout() {
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6">
+                      <ThemeToggle />
                       <button
                         className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                         onClick={() => console.log("Notifications clicked")}
