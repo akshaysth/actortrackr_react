@@ -90,7 +90,7 @@ const TTPList = () => {
       header: "Description",
       accessorKey: "description",
       isSortable: true,
-      render: (value: string) => value || "—",
+      render: (value: unknown) => String(value || "—"),
     },
   ];
 

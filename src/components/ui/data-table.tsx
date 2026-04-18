@@ -1,4 +1,4 @@
-import { useState, useMemo, type CSSProperties } from "react";
+import { useState, useMemo, type CSSProperties, type ReactNode } from "react";
 import {
   Table,
   TableBody,
@@ -26,7 +26,7 @@ import {
   MoreHorizontalIcon,
 } from "lucide-react";
 
-export interface Column<T> {
+export interface Column<T = unknown> {
   key: string;
   header: string;
   accessorKey?: string;
@@ -35,10 +35,10 @@ export interface Column<T> {
   style?: CSSProperties;
   headerClassName?: string;
   className?: string;
-  render?: (value: unknown, row: T) => React.ReactNode;
+  render?: (value: unknown, row: T) => ReactNode | undefined | null;
 }
 
-export interface DataTableProps<T> {
+export interface DataTableProps<T = unknown> {
   columns: Column<T>[];
   data: T[];
   searchKey?: string;
@@ -58,7 +58,7 @@ interface SortState {
   direction: SortDirection;
 }
 
-function DataTable<T extends Record<string, unknown>>({
+function DataTable<T = unknown>({
   columns,
   data,
   searchKey,
@@ -76,20 +76,20 @@ function DataTable<T extends Record<string, unknown>>({
   const [sort, setSort] = useState<SortState>({ key: null, direction: null });
 
   const filteredData = useMemo(() => {
-    let result = [...data];
+    let result = [...data] as T[];
 
     if (searchQuery.trim() && searchKey) {
       const query = searchQuery.toLowerCase();
       result = result.filter(
         (row) =>
-          String(row[searchKey] ?? "").toLowerCase().includes(query)
+          String((row as Record<string, unknown>)[searchKey] ?? "").toLowerCase().includes(query)
       );
     }
 
     if (sort.key && sort.direction) {
       result.sort((a, b) => {
-        const aVal = a[sort.key!];
-        const bVal = b[sort.key!];
+        const aVal = (a as Record<string, unknown>)[sort.key!];
+        const bVal = (b as Record<string, unknown>)[sort.key!];
         if (aVal == null) return 1;
         if (bVal == null) return -1;
         if (typeof aVal === "number" && typeof bVal === "number") {
@@ -145,13 +145,13 @@ function DataTable<T extends Record<string, unknown>>({
   };
 
   const renderCell = (column: Column<T>, row: T) => {
-    const value = column.accessorKey
-      ? row[column.accessorKey]
-      : row[column.key];
+    const rawValue = column.accessorKey
+      ? (row as Record<string, unknown>)[column.accessorKey]
+      : (row as Record<string, unknown>)[column.key];
     if (column.render) {
-      return column.render(value, row);
+      return column.render(rawValue, row);
     }
-    return value ?? "—";
+    return rawValue != null ? String(rawValue) : "—";
   };
 
   const pageNumbers = useMemo(() => {
@@ -239,7 +239,7 @@ function DataTable<T extends Record<string, unknown>>({
               </TableRow>
             ) : (
               paginatedData.map((row, rowIndex) => (
-                <TableRow key={row.id ?? rowIndex}>
+                <TableRow key={((row as Record<string, unknown>).id as string | undefined) ?? rowIndex}>
                   {columns.map((col) => (
                     <TableCell
                       key={col.key}
