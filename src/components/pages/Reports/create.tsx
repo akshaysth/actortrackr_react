@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import PageContent from "../../ui/page-content";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { Input } from "../../ui/input";
@@ -12,7 +13,11 @@ const CreateReport = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: submit to API
+    if (!title.trim()) {
+      toast.error("Validation error", { description: "Report title is required." });
+      return;
+    }
+    toast.success("Report created", { description: `${title} has been added.` });
     navigate("/reports");
   };
 

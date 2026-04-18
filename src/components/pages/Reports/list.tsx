@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import PageContent from "../../ui/page-content";
 import { Button } from "../../ui/button";
 import DataTable, { type Column } from "../../ui/data-table";
@@ -8,6 +9,17 @@ import {
   HiOutlinePencilAlt,
   HiOutlineTrash,
 } from "react-icons/hi";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "../../ui/alert-dialog";
+import { Skeleton } from "../../ui/skeleton";
 
 interface Report {
   id: number;
@@ -19,6 +31,11 @@ const ReportsIndex = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; report: Report | null }>({
+    open: false,
+    report: null,
+  });
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -34,7 +51,9 @@ const ReportsIndex = () => {
       })
       .catch(() => {
         if (mounted) {
-          setError("Failed to load reports");
+          const msg = "Failed to load reports";
+          setError(msg);
+          toast.error("Error", { description: msg });
           setLoading(false);
         }
       });
@@ -44,14 +63,18 @@ const ReportsIndex = () => {
   }, []);
 
   const handleDelete = async (report: Report) => {
-    if (!confirm(`Delete report "${report.name}"?`)) return;
     try {
+      setDeleting(true);
       await fetch(`http://localhost:3001/api/reports/${report.id}`, {
         method: "DELETE",
       });
       setReports((prev) => prev.filter((r) => r.id !== report.id));
+      toast.success("Report deleted", { description: `${report.name} has been removed.` });
     } catch {
-      setError("Failed to delete report");
+      toast.error("Error", { description: "Failed to delete report" });
+    } finally {
+      setDeleting(false);
+      setDeleteDialog({ open: false, report: null });
     }
   };
 
@@ -72,24 +95,43 @@ const ReportsIndex = () => {
 
   const actions = (row: Report) => (
     <div className="flex items-center gap-1">
-      <Link to={`/reports/${row.id}`} aria-label="View">
+      <Link to={`/reports/${row.id}`} aria-label="View report">
         <Button variant="ghost" size="icon" className="size-8">
           <HiOutlineEye className="size-4" />
         </Button>
       </Link>
-      <Link to={`/reports/${row.id}/edit`} aria-label="Edit">
+      <Link to={`/reports/${row.id}/edit`} aria-label="Edit report">
         <Button variant="ghost" size="icon" className="size-8">
           <HiOutlinePencilAlt className="size-4" />
         </Button>
       </Link>
-      <button
-        onClick={() => handleDelete(row)}
-        aria-label="Delete"
-      >
-        <Button variant="ghost" size="icon" className="size-8 text-destructive">
-          <HiOutlineTrash className="size-4" />
-        </Button>
-      </button>
+      <AlertDialog open={deleteDialog.open && deleteDialog.report?.id === row.id}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Report</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{row.name}"? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => handleDelete(row)}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deleting ? "Deleting..." : "Delete"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+        <button
+          onClick={() => setDeleteDialog({ open: true, report: row })}
+          aria-label="Delete report"
+        >
+          <Button variant="ghost" size="icon" className="size-8 text-destructive">
+            <HiOutlineTrash className="size-4" />
+          </Button>
+        </button>
+      </AlertDialog>
     </div>
   );
 
@@ -104,12 +146,19 @@ const ReportsIndex = () => {
         </Link>
       </div>
       {error && (
-        <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
+        <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm" role="alert" aria-live="assertive">
           {error}
         </div>
       )}
       {loading ? (
-        <div className="text-center text-muted-foreground py-8">Loading reports...</div>
+        <div className="space-y-3">
+          <Skeleton className="h-4 w-40" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </div>
       ) : (
         <DataTable
           columns={columns}

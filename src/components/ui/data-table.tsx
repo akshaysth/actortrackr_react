@@ -35,7 +35,7 @@ export interface Column<T> {
   style?: CSSProperties;
   headerClassName?: string;
   className?: string;
-  render?: (value: any, row: T) => React.ReactNode;
+  render?: (value: unknown, row: T) => React.ReactNode;
 }
 
 export interface DataTableProps<T> {
@@ -58,7 +58,7 @@ interface SortState {
   direction: SortDirection;
 }
 
-function DataTable<T extends Record<string, any>>({
+function DataTable<T extends Record<string, unknown>>({
   columns,
   data,
   searchKey,
@@ -194,6 +194,7 @@ function DataTable<T extends Record<string, any>>({
             value={searchQuery}
             onChange={handleSearchChange}
             className="pl-9"
+            aria-label={searchPlaceholder}
           />
         </div>
       )}
@@ -213,6 +214,7 @@ function DataTable<T extends Record<string, any>>({
                     <button
                       onClick={() => handleSort(col.key)}
                       className="flex items-center gap-1 hover:underline"
+                      aria-label={`Sort by ${col.header}`}
                     >
                       {col.header}
                       {getSortIcon(col.key)}
@@ -270,6 +272,7 @@ function DataTable<T extends Record<string, any>>({
                 size="sm"
                 className="h-7 px-2 text-xs"
                 onClick={() => handlePageSizeChange(size)}
+                aria-label={`${size} rows per page`}
               >
                 {size}
               </Button>
@@ -292,13 +295,14 @@ function DataTable<T extends Record<string, any>>({
                 <PaginationPrevious
                   text="Prev"
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  aria-label="Previous page"
                 />
               </PaginationItem>
             )}
             {pageNumbers.map((page, i) =>
               page === "..." ? (
                 <PaginationItem key={`ellipsis-${i}`}>
-                  <PaginationLink size="icon" className="pointer-events-none">
+                  <PaginationLink size="icon" className="pointer-events-none" aria-hidden="true">
                     <MoreHorizontalIcon />
                   </PaginationLink>
                 </PaginationItem>
@@ -307,6 +311,8 @@ function DataTable<T extends Record<string, any>>({
                   <PaginationLink
                     isActive={page === safePage}
                     onClick={() => setCurrentPage(page as number)}
+                    aria-label={`Page ${page}`}
+                    aria-current={page === safePage ? "page" : undefined}
                   >
                     {page}
                   </PaginationLink>
@@ -318,6 +324,7 @@ function DataTable<T extends Record<string, any>>({
                 <PaginationNext
                   text="Next"
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  aria-label="Next page"
                 />
               </PaginationItem>
             )}

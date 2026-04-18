@@ -6,6 +6,7 @@ import { Separator } from "../../ui/separator";
 import { Label } from "../../ui/label";
 import { Textarea } from "../../ui/textarea";
 import { Button } from "../../ui/button";
+import { Skeleton } from "../../ui/skeleton";
 
 interface ReportData {
   name: string;
@@ -43,7 +44,27 @@ const ReportView = () => {
   }, [reportId]);
 
   if (loading) {
-    return <PageContent title="Report"><p className="text-center text-muted-foreground py-8">Loading...</p></PageContent>;
+    return (
+      <PageContent title="Report">
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-6 w-48" />
+            <Skeleton className="h-4 w-24 mt-1" />
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Skeleton className="h-px w-full" />
+            <div>
+              <Skeleton className="h-4 w-16 mb-2" />
+              <Skeleton className="h-40 w-full" />
+            </div>
+          </CardContent>
+          <CardFooter className="gap-2">
+            <Skeleton className="h-10 w-24" />
+            <Skeleton className="h-10 w-28" />
+          </CardFooter>
+        </Card>
+      </PageContent>
+    );
   }
 
   if (error || !report) {

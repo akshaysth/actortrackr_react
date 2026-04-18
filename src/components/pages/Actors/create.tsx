@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { createActor } from "../../../services/actorService";
 import PageContent from "../../ui/page-content";
 import { Input } from "../../ui/input";
@@ -24,11 +25,12 @@ const CreateActor: React.FC = () => {
 
     try {
       await createActor({ name });
+      toast.success("Actor created", { description: `${name} has been added.` });
       navigate("/actors");
     } catch (err) {
-      setError(
-        "Failed to create actor. Please ensure the server is running and try again."
-      );
+      const message = "Failed to create actor. Please ensure the server is running and try again.";
+      setError(message);
+      toast.error("Error", { description: message });
       console.error(err);
     } finally {
       setLoading(false);

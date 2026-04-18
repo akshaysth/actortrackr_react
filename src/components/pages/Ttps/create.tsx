@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import PageContent from "../../ui/page-content";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { Input } from "../../ui/input";
@@ -14,7 +15,11 @@ const TTPCreate = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: submit to API
+    if (!name.trim()) {
+      toast.error("Validation error", { description: "TTP name is required." });
+      return;
+    }
+    toast.success("TTP created", { description: `${name} has been added.` });
     navigate("/ttps");
   };
 

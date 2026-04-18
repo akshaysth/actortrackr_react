@@ -7,6 +7,7 @@ import { Textarea } from "../../ui/textarea";
 import { Label } from "../../ui/label";
 import { Separator } from "../../ui/separator";
 import { Button } from "../../ui/button";
+import { Skeleton } from "../../ui/skeleton";
 
 interface TTPData {
   name: string;
@@ -46,7 +47,42 @@ const TTPView = () => {
   }, [ttpId]);
 
   if (loading) {
-    return <PageContent title="TTP"><p className="text-center text-muted-foreground py-8">Loading...</p></PageContent>;
+    return (
+      <PageContent title="TTP">
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-6 w-32" />
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Skeleton className="h-4 w-20 mb-2" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div>
+              <Skeleton className="h-4 w-28 mb-2" />
+              <Skeleton className="h-24 w-full" />
+            </div>
+            <div>
+              <Skeleton className="h-4 w-28 mb-2" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="flex gap-4">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <Skeleton className="h-px w-full" />
+            <div>
+              <Skeleton className="h-4 w-20 mb-2" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          </CardContent>
+          <CardFooter className="gap-2">
+            <Skeleton className="h-10 w-24" />
+            <Skeleton className="h-10 w-28" />
+          </CardFooter>
+        </Card>
+      </PageContent>
+    );
   }
 
   if (error || !ttp) {

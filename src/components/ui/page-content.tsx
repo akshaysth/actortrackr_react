@@ -9,7 +9,7 @@ interface PageContentProps {
 
 export default function PageContent({ title, subtitle, action, children }: PageContentProps) {
   return (
-    <div className="p-8">
+    <div className="p-8" role="main">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-2xl font-bold text-foreground">{title}</h1>
